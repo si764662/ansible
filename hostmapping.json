@@ -1,0 +1,17 @@
+{
+	"blueprint": "hdp-cluster",
+	"default_password": "admin",
+	"host_groups": [{
+			"name": "ambari",
+			"hosts": [{
+				"fqdn": "ip-172-31-51-93.ec2.internal"
+			}]
+		},
+		{
+			"name": "slave",
+			"hosts": [{
+				"fqdn": "ip-172-31-55-86.ec2.internal"
+			}]
+		}
+	]
+}

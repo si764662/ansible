@@ -1,0 +1,13 @@
+- hosts: all
+  become: true
+  roles:
+    - { role: ssh, tags: ssh }
+    - { role: common, tags: common }
+    - {role: ambari-repo, tags: ambari-repo }
+    - { role: ambari-agent, tags: ambari-agent }
+- hosts: master
+  become: true
+  roles:
+    - {role: ambari-server, tags: ambari-server }
+   # - {role: ambari-blueprint, tags: ambari-blueprint }
+

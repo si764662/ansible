@@ -1,0 +1,13 @@
+---
+
+ambari_repo_url: "http://public-repo-1.hortonworks.com/ambari/centos{{ ansible_distribution_major_version }}/1.x/updates/1.7.0/ambari.repo"
+ambari_repo_gpg_key_url: "http://s3.amazonaws.com/dev.hortonworks.com/ambari/centos6/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins"
+openjdk_path: /usr/lib/jvm/java-1.8.0-openjdk/
+openjdk_package: java-1.8.0-openjdk-devel
+
+java: 'openjdk'                                          # can be set to 'embedded', 'openjdk' or 'oraclejdk'
+#oraclejdk_options:                                        # only used when java is set to 'oraclejdk'
+base_folder: '/usr/java'                                # the folder where the Java package should be unpacked to
+tarball_location: '/tmp/jdk-8u181-linux-x64.tar.gz'     # the location of the tarball on the remote system or on the Ansible controller
+jce_location: '/tmp/jce_policy-8.zip'                   # the location of the JCE package on the remote system or on the Ansible controller
+remote_files: no  

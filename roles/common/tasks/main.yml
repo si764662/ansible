@@ -1,0 +1,82 @@
+---
+- name: Install EPEL
+  copy:
+    src: "{{ role_path }}/files/epel.repo"
+    dest: /etc/yum.repos.d/epel.repo
+
+- name: Install EPEL
+  copy:
+    src: "{{ role_path }}/files/RPM-GPG-KEY-EPEL-7"
+    dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+
+- name: install rhel server optional
+  shell: yum-config-manager --enable rhui-REGION-rhel-server-optional
+
+- name: Install Required Packages
+  yum: name={{ item }} state=latest
+  with_items:
+    - vim
+    - mysql
+    - unzip
+    - wget
+    - git
+    - tar
+    - bzip2
+    - krb5-workstation
+    - yum-versionlock
+    - unixODBC-devel
+    - libselinux-python
+    - selinux-policy
+    - python-pip
+    - httpd
+    - libtirpc-devel
+- name: Install OpenJDK
+  package:
+    name: "{{ openjdk_package }}"
+    update_cache: yes
+    state: present
+
+- name: Stop and disable chronyd
+  service: name=chronyd state=stopped enabled=no
+  ignore_errors: yes
+
+- name: Stop and disable firewalld
+  service: name=firewalld state=stopped enabled=no
+  ignore_errors: yes
+
+- name: Stop and disable iptables
+  service: name=iptables state=stopped enabled=no
+  ignore_errors: yes
+  when: (ansible_os_family=="RedHat" and ansible_distribution_major_version=="6")
+
+- name: Limit Swappiness
+  sysctl:
+    name: vm.swappiness
+    value: "{{ sysctl.vm.swappiness }}"
+    state: present
+    sysctl_file: /etc/sysctl.d/cloudera.conf
+
+
+- name: Disable SELinux on boot
+  selinux: state=disabled
+
+- name: check selinux
+  shell: /usr/sbin/getenforce
+  register: selinux_status
+  changed_when: false
+
+- name: Disable SELinux at runtime
+  shell: "/usr/sbin/setenforce 0 || true"
+  when: selinux_status.stdout != 'Disabled'
+
+# This task is only required for Amazon AWS instances.
+- name: Checking if /etc/cloud/cloud.cfg.d exists (AWS Instance)
+  stat:
+    path: /etc/cloud/cloud.cfg.d
+  register: dir_cloud_config_d
+  changed_when: false
+
+- name: Make sure the httpd service is started
+  service:
+    name: httpd
+    state: started

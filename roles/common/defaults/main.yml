@@ -1,0 +1,8 @@
+---
+sysctl:
+  vm:
+    swappiness: 1
+jdk_download_url: https://s3.amazonaws.com/phdata-ansible-downloads/jdk-8u111-linux-x64.rpm
+
+enable_epel: True
+openjdk_package: java-1.8.0-openjdk-devel

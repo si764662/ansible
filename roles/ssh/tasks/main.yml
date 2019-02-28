@@ -1,0 +1,20 @@
+---
+- name: SSH KeyGen command
+  shell: >
+    ssh-keygen -q -b 2048 -t rsa -N "" -C "creating SSH" -f ~/.ssh/id_rsa
+    creates="~/.ssh/id_rsa"
+
+- name: copy masterpublic to anisble files
+  include_tasks: /etc/ansible/roles/ssh/tasks/copykey.yml
+
+- name: copy masterpub key to slave
+  include_tasks: /etc/ansible/roles/ssh/tasks/key.yml
+
+- name: Enable ssh passwords
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^PasswordAuthentication no'
+    line: 'PasswordAuthentication yes'
+    backrefs: yes
+  notify:
+    - restart_sshd	

@@ -1,0 +1,8 @@
+- name: copy the master id_rsa.pub from master to role path
+  become: yes
+  become_user: root
+  copy:
+    src: /root/.ssh/id_rsa.pub
+    dest: "{{ role_path }}/files/id_rsa.pub"
+    remote_src: yes
+  when: "'master' in group_names"

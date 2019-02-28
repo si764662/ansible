@@ -1,0 +1,10 @@
+- name: copy the keyfile from one server to another
+  become: yes
+  become_user: root
+  copy:
+    src: "{{ role_path }}/files/id_rsa.pub"
+    dest: "/tmp/id_rsa.pub"
+  when: "'slave' in group_names"
+- name: add the public key into Authorized_keys file to enable Key Aut
+  shell: "cat /tmp/id_rsa.pub >> ~/.ssh/authorized_keys"
+  when: "'slave' in group_names"
