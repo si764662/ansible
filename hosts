@@ -42,6 +42,6 @@
 
 ## db-[99:101]-node.example.com
 [master]
-ip-172-31-51-93.ec2.internal
+
 [slave]
-ip-172-31-55-86.ec2.internal
+
