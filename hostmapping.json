@@ -4,13 +4,13 @@
 	"host_groups": [{
 			"name": "ambari",
 			"hosts": [{
-				"fqdn": "ip-172-31-51-93.ec2.internal"
+				"fqdn": "hostanme"
 			}]
 		},
 		{
 			"name": "slave",
 			"hosts": [{
-				"fqdn": "ip-172-31-55-86.ec2.internal"
+				"fqdn": "hostname"
 			}]
 		}
 	]
